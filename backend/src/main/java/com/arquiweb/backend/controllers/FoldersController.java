@@ -1,13 +1,17 @@
 package com.arquiweb.backend.controllers;
 
+import com.arquiweb.backend.controllers.dto.CreateFolderDTO;
+import com.arquiweb.backend.controllers.dto.FolderDTO;
 import com.arquiweb.backend.models.FolderModel;
 import com.arquiweb.backend.models.ItemModel;
 import com.arquiweb.backend.services.FolderService;
 import com.arquiweb.backend.services.ItemService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @CrossOrigin
@@ -18,28 +22,31 @@ public class FoldersController {
     @Autowired
     ItemService itemService;
 
-    @GetMapping()
-    public ArrayList<FolderModel> getFolders(){
-        return folderService.getFolders();
-    }
 
-    @GetMapping("/{name}")
-    public ArrayList<ItemModel> getFolderId(@PathVariable("name") String name){
-        return this.itemService.getItems(name);
-    }
 
     @PostMapping()
-    public FolderModel createFolder(@RequestBody FolderModel folder){
-        return this.folderService.createFolder(folder);
+    public FolderDTO createFolder(@RequestBody CreateFolderDTO folder){
+        return new FolderDTO(this.folderService.createFolder(folder.getName()));
     }
 
-    @DeleteMapping("/{name}")
-    public void deleteFolder(@PathVariable("name") String name){
-        ArrayList<ItemModel> items = this.itemService.getItems(name);
-        for (ItemModel item : items) {
-            this.itemService.deleteItem(item);
+    @PatchMapping("/{id}")
+    public FolderDTO updateFolder(@PathVariable("id") Long id, @RequestBody CreateFolderDTO folder){
+        return new FolderDTO (this.folderService.updateFolder(id, folder.getName()));
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteFolder(@PathVariable("id") Long id){
+        this.folderService.deleteFolder(id);
+    }
+
+    @GetMapping()
+    public List<FolderDTO> getFoldersOrdered(@RequestParam(defaultValue = "name") String sortBy, @RequestParam(defaultValue = "asc") String direction) {
+        if (sortBy == null || sortBy.isEmpty()) {
+            sortBy = "name"; // Default sorting by name
+        } else if (sortBy.equals("itemCount")) {
+            return folderService.getFoldersSortedByItemCount(direction).stream().map(FolderDTO::new).toList();
         }
-        this.folderService.deleteFolder(name);
+        return folderService.getFoldersSorted(sortBy, direction).stream().map(FolderDTO::new).toList();
     }
 
 }

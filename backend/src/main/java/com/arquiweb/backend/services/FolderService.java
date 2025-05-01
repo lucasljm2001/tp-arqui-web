@@ -1,30 +1,23 @@
 package com.arquiweb.backend.services;
 
 import com.arquiweb.backend.models.FolderModel;
-import com.arquiweb.backend.repositories.FolderRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
 
-@Service
-public class FolderService {
-    @Autowired
-    FolderRepository folderRepository;
+public interface FolderService {
+    public ArrayList<FolderModel> getFolders();
 
-    public ArrayList<FolderModel> getFolders(){
-        return (ArrayList<FolderModel>) folderRepository.findAll();
-    }
+    public FolderModel createFolder(String folder);
 
-    public FolderModel createFolder(FolderModel folder){
-        return folderRepository.save(folder);
-    }
+    public void deleteFolder(Long id);
 
-    public void deleteFolder(String name){
-        folderRepository.deleteByName(name);
-    }
+    public FolderModel getFolderById(Long id);
+    public List<FolderModel> getFoldersSorted(String sortBy, String direction);
 
-    public FolderModel getFolderByName(String name){
-        return folderRepository.getFolderByName(name);
-    }
+    public List<FolderModel> getFoldersSortedByItemCount(String direction);
+
+    public FolderModel updateFolder(Long id, String newName);
+
+    public void removeAll();
 }
