@@ -28,7 +28,7 @@ public class ItemModel {
     private LocalDateTime createdAt;
 
     @Setter
-    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.REMOVE})
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="folder_id", nullable=true)
     private FolderModel folder;
 

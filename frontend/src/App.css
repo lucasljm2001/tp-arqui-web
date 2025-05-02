@@ -1,0 +1,45 @@
+.sidebar {
+  min-height: calc(100vh - 56px);
+  border-right: 1px solid #dee2e6;
+  background-color: #f8f9fa;
+  padding: 0;
+}
+
+.main-content {
+  min-height: calc(100vh - 56px);
+  padding: 0;
+}
+
+.folder-list,
+.item-list {
+  height: 100%;
+}
+
+.list-group-item {
+  cursor: pointer;
+}
+
+.list-group-item.active {
+  background-color: #0d6efd;
+  border-color: #0d6efd;
+}
+
+.list-group-item.active .btn-outline-danger {
+  color: white;
+  border-color: white;
+}
+
+.list-group-item.active .btn-outline-danger:hover {
+  background-color: #dc3545;
+  border-color: #dc3545;
+}
+
+.form-check-input:checked + .form-check-label {
+  text-decoration: line-through;
+  color: #6c757d;
+}
+
+/* Estilos para la fecha de creación */
+.list-group-item small.text-muted {
+  font-size: 0.75rem;
+}
