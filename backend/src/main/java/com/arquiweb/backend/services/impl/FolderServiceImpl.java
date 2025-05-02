@@ -6,6 +6,7 @@ import com.arquiweb.backend.models.FolderModel;
 import com.arquiweb.backend.repositories.FolderRepository;
 import com.arquiweb.backend.services.FolderService;
 import com.arquiweb.backend.services.ItemService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -34,6 +35,7 @@ public class FolderServiceImpl implements FolderService {
         return folderRepository.save(folderModel);
     }
 
+    @Transactional
     public void deleteFolder(Long id){
         if (!folderRepository.existsById(id)) {
             throw new NoExisteLaCarpetaException();
@@ -66,6 +68,9 @@ public class FolderServiceImpl implements FolderService {
 
     @Override
     public FolderModel updateFolder(Long id, String newName) {
+        if (newName.isBlank()){
+            throw new NombreVacioException();
+        }
         FolderModel folder = folderRepository.getReferenceById(id);
         if (folder != null) {
             folder.setName(newName);

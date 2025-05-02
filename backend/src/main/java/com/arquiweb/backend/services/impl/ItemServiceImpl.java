@@ -1,5 +1,6 @@
 package com.arquiweb.backend.services.impl;
 
+import com.arquiweb.backend.models.Exception.NoExisteElItemException;
 import com.arquiweb.backend.models.Exception.NombreVacioException;
 import com.arquiweb.backend.models.FolderModel;
 import com.arquiweb.backend.models.ItemModel;
@@ -40,6 +41,9 @@ public class ItemServiceImpl implements ItemService {
     }
 
     public ItemModel getItemById(Long id){
+        if (!itemRepository.existsById(id)) {
+            throw new NoExisteElItemException();
+        }
         return itemRepository.getItemById(id);
     }
 
