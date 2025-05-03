@@ -17,7 +17,6 @@ function App() {
   const [sortBy, setSortBy] = useState("name")
   const [direction, setDirection] = useState("asc")
 
-
   // Cargar carpetas
   const loadFolders = async () => {
     try {
@@ -50,18 +49,15 @@ function App() {
 
   // Eliminar una carpeta
   const handleDeleteFolder = async (folderId) => {
-    if (window.confirm("¿Estás seguro de que quieres eliminar esta carpeta?")) {
-      try {
-        await folderAPI.deleteFolder(folderId)
-        loadFolders()
-        if (selectedFolder && selectedFolder.folder_id === folderId) {
-          setSelectedFolder(null)
-        }
-
-      } catch (err) {
-        setError("Error al eliminar la carpeta")
-        console.error(err)
+    try {
+      await folderAPI.deleteFolder(folderId)
+      loadFolders()
+      if (selectedFolder && selectedFolder.folder_id === folderId) {
+        setSelectedFolder(null)
       }
+    } catch (err) {
+      setError("Error al eliminar la carpeta")
+      console.error(err)
     }
   }
 
@@ -106,6 +102,7 @@ function App() {
                 setSelectedFolder={setSelectedFolder}
                 onCreateFolder={handleCreateFolder}
                 onDeleteFolder={handleDeleteFolder}
+                onUpdateFolder={handleUpdateFolder}
                 onSortChange={handleSortFolders}
                 sortBy={sortBy}
                 direction={direction}
@@ -115,7 +112,13 @@ function App() {
               <Routes>
                 <Route
                   path="/folders/:folderId/items"
-                  element={<ItemList setSelectedFolder={setSelectedFolder} onUpdateFolder={handleUpdateFolder} />}
+                  element={
+                    <ItemList
+                      setSelectedFolder={setSelectedFolder}
+                      onUpdateFolder={handleUpdateFolder}
+                      onReloadFolders={loadFolders}
+                    />
+                  }
                 />
                 <Route
                   path="/"

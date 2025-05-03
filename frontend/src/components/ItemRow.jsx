@@ -42,10 +42,12 @@ function ItemRow({ item, isEditing, onToggle, onEdit, onDelete, onUpdate, onCanc
             </div>
             <div className="btn-group">
               <button className="btn btn-sm btn-outline-secondary" onClick={() => onEdit(item.item_id)}>
-                <i className="bi bi-pencil"></i>
+                <i className="bi bi-pencil me-1"></i>
+                Editar
               </button>
               <button className="btn btn-sm btn-outline-danger" onClick={() => onDelete(item.item_id)}>
-                <i className="bi bi-trash"></i>
+                <i className="bi bi-trash me-1"></i>
+                Eliminar
               </button>
             </div>
           </div>

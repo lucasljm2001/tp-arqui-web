@@ -8,7 +8,7 @@ import ItemRow from "./ItemRow"
 import FolderHeader from "./FolderHeader"
 import ItemControls from "./ItemControls"
 
-function ItemList({ setSelectedFolder, onUpdateFolder }) {
+function ItemList({ setSelectedFolder, onUpdateFolder, onReloadFolders }) {
   const { folderId } = useParams()
   const [items, setItems] = useState([])
   const [folder, setFolder] = useState(null)
@@ -78,7 +78,9 @@ function ItemList({ setSelectedFolder, onUpdateFolder }) {
   const handleCreateItem = async (description) => {
     try {
       await itemAPI.createItem(folderId, description)
-      loadFolderAndItems()
+      await loadFolderAndItems()
+      // Recargar la lista de carpetas para actualizar el contador
+      onReloadFolders()
     } catch (err) {
       setError("Error al crear el elemento")
       console.error(err)
@@ -90,7 +92,7 @@ function ItemList({ setSelectedFolder, onUpdateFolder }) {
     try {
       await itemAPI.updateItem(itemId, description)
       setEditingItem(null)
-      loadFolderAndItems()
+      await loadFolderAndItems()
     } catch (err) {
       setError("Error al actualizar el elemento")
       console.error(err)
@@ -101,7 +103,7 @@ function ItemList({ setSelectedFolder, onUpdateFolder }) {
   const handleToggleItem = async (itemId) => {
     try {
       await itemAPI.toggleItem(itemId)
-      loadFolderAndItems()
+      await loadFolderAndItems()
     } catch (err) {
       setError("Error al cambiar el estado del elemento")
       console.error(err)
@@ -110,14 +112,14 @@ function ItemList({ setSelectedFolder, onUpdateFolder }) {
 
   // Eliminar un elemento
   const handleDeleteItem = async (itemId) => {
-    if (window.confirm("¿Estás seguro de que quieres eliminar este elemento?")) {
-      try {
-        await itemAPI.deleteItem(itemId)
-        loadFolderAndItems()
-      } catch (err) {
-        setError("Error al eliminar el elemento")
-        console.error(err)
-      }
+    try {
+      await itemAPI.deleteItem(itemId)
+      await loadFolderAndItems()
+      // Recargar la lista de carpetas para actualizar el contador
+      onReloadFolders()
+    } catch (err) {
+      setError("Error al eliminar el elemento")
+      console.error(err)
     }
   }
 

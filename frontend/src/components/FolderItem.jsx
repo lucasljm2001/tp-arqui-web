@@ -17,7 +17,8 @@ function FolderItem({ folder, isSelected, onSelect, onDelete }) {
       </div>
       <div className="btn-group">
         <button className="btn btn-sm btn-outline-danger" onClick={handleDelete}>
-          <i className="bi bi-trash"></i>
+          <i className="bi bi-trash me-1"></i>
+          Eliminar
         </button>
       </div>
     </div>

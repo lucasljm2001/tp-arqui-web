@@ -8,9 +8,10 @@ function FolderHeader({ folder, isEditing, onEdit, onUpdate, onCancelEdit }) {
         <FolderForm folder={folder} onSubmit={onUpdate} onCancel={onCancelEdit} />
       ) : (
         <div className="d-flex align-items-center">
-          <h2>{folder?.name}</h2>
-          <button className="btn btn-sm btn-outline-secondary ms-2" onClick={onEdit}>
-            <i className="bi bi-pencil"></i>
+          <h2 className="me-2">{folder?.name}</h2>
+          <button className="btn btn-outline-secondary" onClick={onEdit}>
+            <i className="bi bi-pencil me-1"></i>
+            Editar
           </button>
         </div>
       )}

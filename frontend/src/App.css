@@ -24,9 +24,15 @@
   border-color: #0d6efd;
 }
 
-.list-group-item.active .btn-outline-danger {
+.list-group-item.active .btn-outline-danger,
+.list-group-item.active .btn-outline-secondary {
   color: white;
   border-color: white;
+}
+
+.list-group-item.active .btn-outline-danger:hover,
+.list-group-item.active .btn-outline-secondary:hover {
+  background-color: rgba(255, 255, 255, 0.2);
 }
 
 .list-group-item.active .btn-outline-danger:hover {
@@ -42,4 +48,31 @@
 /* Estilos para la fecha de creación */
 .list-group-item small.text-muted {
   font-size: 0.75rem;
+}
+
+/* Estilos para los botones con texto */
+.btn-group .btn,
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn i {
+  font-size: 0.875rem;
+}
+
+/* Estilos para el formulario de edición dentro de un elemento de lista */
+.list-group-item form {
+  margin: 0;
+  padding: 0;
+}
+
+.list-group-item .input-group {
+  margin-bottom: 0;
+}
+
+/* Estilos específicos para el encabezado de la carpeta */
+.folder-header h2 {
+  margin-bottom: 0;
 }
