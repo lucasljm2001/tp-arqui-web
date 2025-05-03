@@ -4,13 +4,11 @@ import { useState, useEffect } from "react"
 import { useParams } from "react-router-dom"
 import { folderAPI, itemAPI } from "../api/api"
 import ItemForm from "./ItemForm"
-// Cambiar la importación de ItemItem a ItemRow
 import ItemRow from "./ItemRow"
-// Añadir las importaciones de los nuevos componentes
 import FolderHeader from "./FolderHeader"
 import ItemControls from "./ItemControls"
 
-function ItemList({ setSelectedFolder }) {
+function ItemList({ setSelectedFolder, onUpdateFolder }) {
   const { folderId } = useParams()
   const [items, setItems] = useState([])
   const [folder, setFolder] = useState(null)
@@ -64,9 +62,12 @@ function ItemList({ setSelectedFolder }) {
   // Actualizar nombre de carpeta
   const handleUpdateFolder = async (name) => {
     try {
-      await folderAPI.updateFolder(folderId, name)
+      // Usar la función que viene del componente padre
+      await onUpdateFolder(folderId, name)
       setEditingFolder(false)
-      loadFolderAndItems()
+
+      // Actualizar el estado local de la carpeta
+      setFolder((prevFolder) => ({ ...prevFolder, name }))
     } catch (err) {
       setError("Error al actualizar la carpeta")
       console.error(err)
@@ -151,7 +152,13 @@ function ItemList({ setSelectedFolder }) {
               onCancelEdit={() => setEditingFolder(false)}
             />
 
-            <ItemControls filter={filter} onFilterChange={setFilter} sortBy={sortBy} onSortChange={handleSort} />
+            <ItemControls
+              filter={filter}
+              onFilterChange={setFilter}
+              sortBy={sortBy}
+              direction={direction}
+              onSortChange={handleSort}
+            />
           </div>
 
           <ItemForm onSubmit={handleCreateItem} />

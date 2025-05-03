@@ -21,7 +21,7 @@ public class FolderModel {
     private String name;
 
     @Getter
-    @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.REMOVE}, mappedBy = "folder", orphanRemoval = true)
+    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.REMOVE}, mappedBy = "folder", orphanRemoval = true)
     @JsonIgnore
     private List<ItemModel> items = new ArrayList<ItemModel>();
 

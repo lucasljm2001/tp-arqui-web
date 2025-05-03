@@ -1,38 +1,22 @@
 "use client"
 
-import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
-import { folderAPI } from "../api/api"
 import FolderForm from "./FolderForm"
-// Añadir la importación del nuevo componente FolderItem
 import FolderItem from "./FolderItem"
 
-function FolderList({ selectedFolder, setSelectedFolder }) {
-  const [folders, setFolders] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(null)
-  const [sortBy, setSortBy] = useState("name")
-  const [direction, setDirection] = useState("asc")
+function FolderList({
+  folders,
+  loading,
+  error,
+  selectedFolder,
+  setSelectedFolder,
+  onCreateFolder,
+  onDeleteFolder,
+  onSortChange,
+  sortBy,
+  direction,
+}) {
   const navigate = useNavigate()
-
-  // Cargar carpetas
-  const loadFolders = async () => {
-    try {
-      setLoading(true)
-      const response = await folderAPI.getFolders(sortBy, direction)
-      setFolders(response.data)
-      setError(null)
-    } catch (err) {
-      setError("Error al cargar las carpetas")
-      console.error(err)
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  useEffect(() => {
-    loadFolders()
-  }, [sortBy, direction])
 
   // Seleccionar una carpeta
   const handleSelectFolder = (folder) => {
@@ -40,43 +24,10 @@ function FolderList({ selectedFolder, setSelectedFolder }) {
     navigate(`/folders/${folder.folder_id}/items`)
   }
 
-  // Eliminar una carpeta
-  const handleDeleteFolder = async (folderId, e) => {
-    e.stopPropagation()
-    if (window.confirm("¿Estás seguro de que quieres eliminar esta carpeta?")) {
-      try {
-        await folderAPI.deleteFolder(folderId)
-        loadFolders()
-        if (selectedFolder && selectedFolder.folder_id === folderId) {
-          console.log("entraa")
-          setSelectedFolder(null)
-          navigate("/")
-        }
-      } catch (err) {
-        setError("Error al eliminar la carpeta")
-        console.error(err)
-      }
-    }
-  }
-
-  // Crear una nueva carpeta
-  const handleCreateFolder = async (name) => {
-    try {
-      await folderAPI.createFolder(name)
-      loadFolders()
-    } catch (err) {
-      setError("Error al crear la carpeta")
-      console.error(err)
-    }
-  }
-
-  // Cambiar el orden de las carpetas
-  const handleSort = (newSortBy) => {
-    if (sortBy === newSortBy) {
-      setDirection(direction === "asc" ? "desc" : "asc")
-    } else {
-      setSortBy(newSortBy)
-      setDirection("asc")
+  const handleDeleteFolder = (folderId) =>{
+    onDeleteFolder(folderId)
+    if (selectedFolder && selectedFolder.folder_id === folderId) {
+      navigate("/")
     }
   }
 
@@ -96,12 +47,12 @@ function FolderList({ selectedFolder, setSelectedFolder }) {
           </button>
           <ul className="dropdown-menu" aria-labelledby="sortDropdown">
             <li>
-              <button className="dropdown-item" onClick={() => handleSort("name")}>
+              <button className="dropdown-item" onClick={() => onSortChange("name")}>
                 Por nombre {sortBy === "name" && (direction === "asc" ? "↑" : "↓")}
               </button>
             </li>
             <li>
-              <button className="dropdown-item" onClick={() => handleSort("itemCount")}>
+              <button className="dropdown-item" onClick={() => onSortChange("itemCount")}>
                 Por cantidad {sortBy === "itemCount" && (direction === "asc" ? "↑" : "↓")}
               </button>
             </li>
@@ -109,7 +60,7 @@ function FolderList({ selectedFolder, setSelectedFolder }) {
         </div>
       </div>
 
-      <FolderForm onSubmit={handleCreateFolder} />
+      <FolderForm onSubmit={onCreateFolder} />
 
       {error && <div className="alert alert-danger">{error}</div>}
 
@@ -130,7 +81,7 @@ function FolderList({ selectedFolder, setSelectedFolder }) {
                 folder={folder}
                 isSelected={selectedFolder && selectedFolder.folder_id === folder.folder_id}
                 onSelect={handleSelectFolder}
-                onDelete={(folderId) => handleDeleteFolder(folderId, event)}
+                onDelete={handleDeleteFolder}
               />
             ))
           )}
