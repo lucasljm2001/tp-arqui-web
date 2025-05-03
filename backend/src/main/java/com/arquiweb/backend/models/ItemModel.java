@@ -28,7 +28,7 @@ public class ItemModel {
     private LocalDateTime createdAt;
 
     @Setter
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="folder_id", nullable=true)
     private FolderModel folder;
 

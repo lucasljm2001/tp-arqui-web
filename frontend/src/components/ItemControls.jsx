@@ -1,6 +1,6 @@
 "use client"
 
-function ItemControls({ filter, onFilterChange, sortBy, onSortChange }) {
+function ItemControls({ filter, onFilterChange, sortBy, direction, onSortChange }) {
   return (
     <div className="d-flex">
       <div className="dropdown me-2">
@@ -45,12 +45,12 @@ function ItemControls({ filter, onFilterChange, sortBy, onSortChange }) {
         <ul className="dropdown-menu" aria-labelledby="sortDropdown">
           <li>
             <button className="dropdown-item" onClick={() => onSortChange("createdAt")}>
-              Por fecha {sortBy === "createdAt" && (onSortChange.direction === "asc" ? "↑" : "↓")}
+              Por fecha {sortBy === "createdAt" && (direction === "asc" ? "↑" : "↓")}
             </button>
           </li>
           <li>
             <button className="dropdown-item" onClick={() => onSortChange("description")}>
-              Por descripción {sortBy === "description" && (onSortChange.direction === "asc" ? "↑" : "↓")}
+              Por descripción {sortBy === "description" && (direction === "asc" ? "↑" : "↓")}
             </button>
           </li>
         </ul>
