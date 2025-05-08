@@ -5,7 +5,7 @@ en el cual se detalla el alcance, tecnologias y otros detalles del proyecto. Por
 ## Ejecucion del proyecto
 Para la ejecucion del proyecto se tienen dos caminos, dependiendo si se cuenta con la herramienta [docker](https://www.docker.com/products/docker-desktop/) instalada o no, en esta guia exploraremos ambas alternativas, sin embargo es muy recomendable optar por la opcion de docker ya que simplifica mucho la ejecucion
 ### Ejecucion con docker
-En caso de contar con docker, simplemente debemos correr el comando `docker-compose up` y veremos la aplicacion disponible en la url http://localhost:5173/
+En caso de contar con docker, simplemente debemos correr el comando `docker-compose up` en la raiz del proyecto y veremos la aplicacion disponible en la url http://localhost:5173/
 ### Ejecucion sin docker
 Para poder correr el proyecto sin utilizar docker, se debera tener instaladas las siguientes dependencias
 - [mysql](https://www.mysql.com/downloads/)
