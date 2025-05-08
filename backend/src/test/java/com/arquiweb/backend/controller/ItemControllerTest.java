@@ -73,6 +73,13 @@ public class ItemControllerTest {
     }
 
     @Test
+    public void deleteItemNotFound() throws Throwable {
+        Assertions.assertThrows(Throwable.class, () -> {
+            mockMvc.deleteItem(999L, HttpStatus.NOT_FOUND);
+        });
+    }
+
+    @Test
     public void getItemsOrdered() throws Throwable {
         List<ItemDTO> items = mockMvc.getItems(1L, "description", "asc", "", "", HttpStatus.OK);
 
