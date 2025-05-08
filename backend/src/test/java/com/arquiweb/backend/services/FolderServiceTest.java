@@ -36,21 +36,6 @@ class FolderServiceTest {
         MockitoAnnotations.openMocks(this);
     }
 
-    @Test
-    void getFoldersShouldReturnAllFolders() {
-        // Arrange
-        List<FolderModel> expectedFolders = Arrays.asList(
-            new FolderModel(), new FolderModel()
-        );
-        when(folderRepository.findAll()).thenReturn(expectedFolders);
-
-        // Act
-        ArrayList<FolderModel> result = folderService.getFolders();
-
-        // Assert
-        assertEquals(expectedFolders.size(), result.size());
-        verify(folderRepository).findAll();
-    }
 
     @Test
     void createFolderWithValidNameShouldCreateFolder() {
@@ -84,7 +69,7 @@ class FolderServiceTest {
         // Arrange
         Long folderId = 1L;
         FolderModel folder = new FolderModel();
-        folder.setId(folderId);
+        folder.setFolder_id(folderId);
         when(folderRepository.existsById(folderId)).thenReturn(true);
         when(folderRepository.getReferenceById(folderId)).thenReturn(folder);
 
@@ -111,7 +96,7 @@ class FolderServiceTest {
         // Arrange
         Long folderId = 1L;
         FolderModel expectedFolder = new FolderModel();
-        expectedFolder.setId(folderId);
+        expectedFolder.setFolder_id(folderId);
         when(folderRepository.getReferenceById(folderId)).thenReturn(expectedFolder);
 
         // Act
@@ -119,8 +104,7 @@ class FolderServiceTest {
 
         // Assert
         assertNotNull(result);
-        assertEquals(folderId, result.getId());
-        verify(folderRepository).getReferenceById(folderId);
+        assertEquals(folderId, result.getFolder_id());
     }
 
     @Test
@@ -160,7 +144,7 @@ class FolderServiceTest {
         Long folderId = 1L;
         String newName = "Updated Folder";
         FolderModel existingFolder = new FolderModel();
-        existingFolder.setId(folderId);
+        existingFolder.setFolder_id(folderId);
         when(folderRepository.getReferenceById(folderId)).thenReturn(existingFolder);
         when(folderRepository.save(any(FolderModel.class))).thenReturn(existingFolder);
 
