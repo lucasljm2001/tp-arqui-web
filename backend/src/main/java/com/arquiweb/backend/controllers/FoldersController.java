@@ -1,6 +1,7 @@
 package com.arquiweb.backend.controllers;
 
 import com.arquiweb.backend.controllers.dto.CreateFolderDTO;
+import com.arquiweb.backend.controllers.dto.DeleteResponseDTO;
 import com.arquiweb.backend.controllers.dto.FolderDTO;
 import com.arquiweb.backend.models.FolderModel;
 import com.arquiweb.backend.models.ItemModel;
@@ -22,8 +23,6 @@ public class FoldersController {
     @Autowired
     ItemService itemService;
 
-
-
     @PostMapping()
     public FolderDTO createFolder(@RequestBody CreateFolderDTO folder){
         return new FolderDTO(this.folderService.createFolder(folder.getName()));
@@ -35,8 +34,9 @@ public class FoldersController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteFolder(@PathVariable("id") Long id){
+    public DeleteResponseDTO deleteFolder(@PathVariable("id") Long id){
         this.folderService.deleteFolder(id);
+        return new DeleteResponseDTO("Carpeta eliminada");
     }
 
     @GetMapping()
@@ -48,5 +48,4 @@ public class FoldersController {
         }
         return folderService.getFoldersSorted(sortBy, direction).stream().map(FolderDTO::new).toList();
     }
-
 }

@@ -1,6 +1,7 @@
 package com.arquiweb.backend.controllers;
 
 import com.arquiweb.backend.controllers.dto.CreateItemDTO;
+import com.arquiweb.backend.controllers.dto.DeleteResponseDTO;
 import com.arquiweb.backend.controllers.dto.ItemDTO;
 import com.arquiweb.backend.models.Exception.NoExisteElItemException;
 import com.arquiweb.backend.models.Exception.NoExisteLaCarpetaException;
@@ -23,7 +24,6 @@ public class ItemsController {
     @Autowired
     FolderService folderService;
 
-
     @PostMapping("/folders/{folder}/items")
     public ItemDTO saveItem(@RequestBody CreateItemDTO item, @PathVariable("folder") Long id){
         FolderModel folder = folderService.getFolderById(id);
@@ -32,7 +32,6 @@ public class ItemsController {
 
     @PatchMapping("/items/{id}")
     public ItemDTO changeItem(@RequestBody CreateItemDTO item, @PathVariable("id") Long id){
-
         ItemModel oldItem = this.itemService.getItemById(id);
 
         if (oldItem == null){
@@ -47,7 +46,6 @@ public class ItemsController {
 
     @PatchMapping("/items/{id}/toogle")
     public ItemDTO changeItem(@PathVariable("id") Long id){
-
         ItemModel oldItem = this.itemService.getItemById(id);
 
         oldItem.changeStatus();
@@ -57,9 +55,10 @@ public class ItemsController {
     }
 
     @DeleteMapping("/items/{id}")
-    public void deleteItem(@PathVariable("id") Long id){
+    public DeleteResponseDTO deleteItem(@PathVariable("id") Long id){
         ItemModel item = this.itemService.getItemById(id);
         this.itemService.deleteItem(item);
+        return new DeleteResponseDTO("Item eliminado");
     }
 
     @GetMapping("/folders/{folder}/items")
@@ -85,5 +84,4 @@ public class ItemsController {
         }
         return itemService.getItemsByState(id, status, sortBy, direction).stream().map(ItemDTO::new).toList();
     }
-
 }
