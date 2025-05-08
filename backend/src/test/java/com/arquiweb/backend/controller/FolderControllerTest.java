@@ -51,7 +51,7 @@ public class FolderControllerTest {
     }
 
     @Test
-    public void testCreateFolder() throws Throwable {
+    public void createFolder() throws Throwable {
         CreateFolderDTO createFolderDTO = new CreateFolderDTO("Test Folder");
         FolderModel folderModel = new FolderModel();
         folderModel.setFolder_id(11L);
@@ -65,7 +65,7 @@ public class FolderControllerTest {
     }
 
     @Test
-    public void testUpdateFolder() throws Throwable {
+    public void updateFolder() throws Throwable {
         CreateFolderDTO updateFolderDTO = new CreateFolderDTO("Updated Folder");
 
         FolderDTO folder = mockMvc.updateFolder(1L, updateFolderDTO, HttpStatus.OK);
@@ -75,7 +75,7 @@ public class FolderControllerTest {
     }
 
     @Test
-    public void testGetFoldersOrdered() throws Throwable {
+    public void getFoldersOrdered() throws Throwable {
 
         List<FolderDTO> folders = mockMvc.getFolders("name", "asc", HttpStatus.OK);
 
@@ -85,7 +85,7 @@ public class FolderControllerTest {
     }
 
     @Test
-    public void testDeleteFolder() throws Throwable {
+    public void deleteFolder() throws Throwable {
         Assertions.assertEquals(10, mockMvc.getFolders("name", "asc",HttpStatus.OK).size());
 
 
@@ -95,7 +95,17 @@ public class FolderControllerTest {
     }
 
     @Test
-    public void testCreateFolderInvalidData() throws Throwable {
+    public void deleteFolderNotFound() throws Throwable {
+        Assertions.assertEquals(10, mockMvc.getFolders("name", "asc",HttpStatus.OK).size());
+
+        Assertions.assertThrows(Throwable.class, () -> {
+            mockMvc.deleteFolder(100L, HttpStatus.NOT_FOUND);
+        });
+
+    }
+
+    @Test
+    public void createFolderInvalidData() throws Throwable {
         CreateFolderDTO invalidFolderDTO = new CreateFolderDTO("");
 
         Assertions.assertThrows(Throwable.class, () -> {
@@ -104,7 +114,7 @@ public class FolderControllerTest {
     }
 
     @Test
-    public void testUpdateFolderNotFound() throws Throwable {
+    public void updateFolderNotFound() throws Throwable {
         CreateFolderDTO updateFolderDTO = new CreateFolderDTO("Updated Folder");
 
 

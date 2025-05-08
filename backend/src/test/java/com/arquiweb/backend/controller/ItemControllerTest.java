@@ -28,7 +28,7 @@ public class ItemControllerTest {
     }
 
     @Test
-    public void testCreateItem() throws Throwable {
+    public void createItem() throws Throwable {
         CreateItemDTO createItemDTO = new CreateItemDTO("Test Item");
         Assertions.assertEquals(14, mockMvc.getItems(1L, "description", "asc", "", "", HttpStatus.OK).size());
         ItemDTO item = mockMvc.createItem(1L, createItemDTO, HttpStatus.OK);
@@ -40,7 +40,7 @@ public class ItemControllerTest {
     }
 
     @Test
-    public void testUpdateItem() throws Throwable {
+    public void updateItem() throws Throwable {
         CreateItemDTO updateItemDTO = new CreateItemDTO("A - Updated Item");
         mockMvc.updateItem(1L, updateItemDTO, HttpStatus.OK);
 
@@ -51,7 +51,7 @@ public class ItemControllerTest {
     }
 
     @Test
-    public void testToggleItemStatus() throws Throwable {
+    public void toggleItemStatus() throws Throwable {
          mockMvc.toggleItemStatus(1L, HttpStatus.OK);
 
         List<ItemDTO> items = mockMvc.getItems(1L, "description", "asc", "", "", HttpStatus.OK);
@@ -62,7 +62,7 @@ public class ItemControllerTest {
     }
 
     @Test
-    public void testDeleteItem() throws Throwable {
+    public void deleteItem() throws Throwable {
         List<ItemDTO> itemsBefore = mockMvc.getItems(1L, "description", "asc", "", "", HttpStatus.OK);
         Assertions.assertEquals(14, itemsBefore.size());
 
@@ -73,7 +73,14 @@ public class ItemControllerTest {
     }
 
     @Test
-    public void testGetItemsOrdered() throws Throwable {
+    public void deleteItemNotFound() throws Throwable {
+        Assertions.assertThrows(Throwable.class, () -> {
+            mockMvc.deleteItem(999L, HttpStatus.NOT_FOUND);
+        });
+    }
+
+    @Test
+    public void getItemsOrdered() throws Throwable {
         List<ItemDTO> items = mockMvc.getItems(1L, "description", "asc", "", "", HttpStatus.OK);
 
         Assertions.assertEquals(14, items.size());
@@ -82,7 +89,7 @@ public class ItemControllerTest {
     }
 
     @Test
-    public void testCreateItemInvalidData() throws Throwable {
+    public void createItemInvalidData() throws Throwable {
         CreateItemDTO invalidItemDTO = new CreateItemDTO("");
 
         Assertions.assertThrows(Throwable.class, () -> {
@@ -91,7 +98,7 @@ public class ItemControllerTest {
     }
 
     @Test
-    public void testUpdateItemNotFound() throws Throwable {
+    public void updateItemNotFound() throws Throwable {
         CreateItemDTO updateItemDTO = new CreateItemDTO("Updated Item");
 
         Assertions.assertThrows(Throwable.class, () -> {
